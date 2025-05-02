@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  *,
+  *::before,
+  *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  /* For Firefox. */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* For WebKit (Chrome & Safari). */
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.input {
+  @apply p-2 border border-slate-600 w-full rounded bg-slate-800 text-gray-100
+}
+
+label {
+  @apply text-lg text-gray-400
+}
+
+.loading {
+  background: linear-gradient(90deg, #303030 25%, #242424 50%, #302e2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s infinite ease-in-out;
+  pointer-events: none;
+  @apply absolute inset-0 z-10;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.error {
+  @apply text-sm text-red-500
 }
