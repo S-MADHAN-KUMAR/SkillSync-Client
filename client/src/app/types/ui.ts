@@ -1,3 +1,5 @@
+import { JobPostFormValues } from "./jobPost";
+
 export type Column<T> = {
     title: string;
     key: string;
@@ -40,12 +42,24 @@ export const candidateLinks: NavLink[] = [
     { label: 'Find Jobs', href: '/candidate/jobs' },
     { label: 'Companies', href: '/candidate/companies' },
     { label: 'Profile', href: '/candidate/profile' },
-    { label: 'Settings', href: '/candidate/settings' },
 ]
 export const employeeLinks: NavLink[] = [
     { label: 'Home', href: '/employee' },
-    // { label: 'Find Jobs', href: '/employee/jobs' },
     { label: 'Candidates', href: '/employee/candidates' },
     { label: 'dashboard', href: '/employee/dashboard' },
-    // { label: 'Settings', href: '/employee/settings' },
-]   
+]
+
+export interface JobTableRowProps {
+    post: JobPostFormValues;
+    onEdit: (id: string) => void;
+    onDelete: (id: string, status: string) => void;
+}
+
+export interface JobTableProps {
+    jobPosts: JobPostFormValues[];
+    onEdit: (id: string) => void;
+    onDelete: (id: string, status: string) => void;
+    onPageChange: (page: number) => void;
+    page: number;
+    totalPages: number;
+}

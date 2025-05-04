@@ -45,7 +45,7 @@ export default function Page() {
             <div className="w-[100vw] flex justify-between gap-10 pt-10 px-10">
                 <div className="flex flex-col sticky top-26 justify-between h-[80vh]">
                     {/* Sidebar */}
-                    <div className="bg-[#d1dce8]  flex flex-col w-[350px] dark:bg-black p-6 rounded-lg h-fit text-black dark:text-white">
+                    <div className="bg-[#d1dce8]  flex flex-col w-[250px] dark:bg-black p-6 rounded-lg h-fit text-black dark:text-white">
                         <div className="flex flex-col gap-2">
                             <p
                                 onClick={() => setActiveTab("overview")}

@@ -1,11 +1,30 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import { MdAccountCircle } from 'react-icons/md'
 import { BiSolidImageAdd } from 'react-icons/bi'
 import Navbar from '../../../ui/Navbar'
 import { candidateLinks } from '../types/ui'
 import Post from '../../../ui/cards/Post'
+import { GetCandidateProfile } from '../../../api/candidate/candidate'
+import { CandidateProfileFormValues } from '../types/candidate'
 
 const page = () => {
+    const [data, setData] = React.useState<CandidateProfileFormValues>(null);
+    const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("candidate") || "null") : null;
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!user?.candidateProfileId) return;
+            try {
+                const res = await GetCandidateProfile(user.candidateProfileId);
+                if (res) {
+                    setData(res);
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile:", error);
+            }
+        };
+        fetchProfile();
+    }, []);
     return (
         <div>
             <Navbar
@@ -14,61 +33,35 @@ const page = () => {
             <div className="w-[100vw] h-full flex justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
 
                 {/* ---- 1 ----*/}
-                <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[85vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
+                <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[55vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
 
                     <div className=" w-full  h-[25vh]">
                         <div className="w-full h-24 relative ">
                             <img
                                 className="w-full h-full object-cover"
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6t4-o5039qfTjREeDv5fw2_QdypxIxNGm2Q&s"
+                                src={data?.banner}
                             />
-                            <div className="w-30 h-30 overflow-hidden rounded-full border-white border-4 dark:border-[#1f1f1f] absolute -bottom-15 left-1/2 transform -translate-x-1/2">
+                            <div className="w-30 h-30 overflow-hidden rounded-full border-white border-4 dark:border-[black] absolute -bottom-15 left-1/2 transform -translate-x-1/2">
                                 <img
                                     className="w-full h-full object-cover"
-                                    src="https://i.pinimg.com/736x/76/a7/0f/76a70f50208522e860bcd7d84d53d2c9.jpg"
-                                    alt=""
+                                    src={data?.logo}
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className=" h-[60vh] flex flex-col gap-1 justify-around items-center text-center px-4">
-                        <h1 className="text-2xl font-medium">Madhan Kumar</h1>
+                    <div className=" h-fit flex flex-col gap-6 justify-around items-center text-center px-4">
+                        <h1 className="text-2xl font-medium">{data?.name}</h1>
                         <p className="text-sm text-[gray]">
-                            Passionate FullStack Web Developer I Node.JS I MongoDB I
-                            JavaScript I React.js
+                            {data?.bio.length > 50 ? `${data?.bio.slice(0, 50)}...` : data?.bio}
                         </p>
 
-                        <p className="text-xs text-[gray]"> Chennai, Tamil Nadu</p>
+                        <p className="text-xs text-[gray]">{data?.state},{data?.country}</p>
 
-                        <button className="bg-[#093b82] text-sm text-white font-medium text-center w-2/3 h-8 rounded-full ">
+                        <a href='/candidate/profile' className="bg-[#093b82] text-sm text-white cursor-pointer font-medium text-center w-2/3  rounded-full py-2 hover:scale-105 duration-150">
                             Update Profile
-                        </button>
+                        </a>
 
-                        <div
-                            className="bg-[#dedede] dark:bg-[#111212] w-4/5 text-sm rounded-lg h-fit gap-2 flex items-center flex-col p-2"
-                        >
-                            <h1
-                                className="bg-[#f9f9f9] dark:bg-[#090909de] w-full rounded-md flex justify-evenly"
-                                style={{ padding: "8px" }}
-                            >
-                                Profile performance :{" "}
-                                <span className="text-[#093b82]">45+</span>
-                            </h1>
-                            <h1
-                                className="bg-[#f9f9f9] dark:bg-[#090909de] w-full rounded-md flex justify-evenly"
-                                style={{ padding: "8px" }}
-                            >
-                                {" "}
-                                Post impressions : <span className="text-[#093b82]">45+</span>
-                            </h1>
-                            <h1
-                                className="bg-[#f9f9f9] dark:bg-[#090909de] w-full rounded-md flex justify-evenly"
-                                style={{ padding: "8px" }}
-                            >
-                                Profile views : <span className="text-[#093b82]">45+</span>
-                            </h1>
-                        </div>
                     </div>
 
                 </div>

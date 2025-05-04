@@ -26,7 +26,7 @@ const EditJob: React.FC<EditJobProps> = ({ data, setEditOpen }) => {
         education: '',
         experience: '',
         jobType: '',
-        experienceDate: '',
+        expiredAt: '',
         jobLevel: '',
         vacancies: '',
         country: '',
@@ -54,7 +54,7 @@ const EditJob: React.FC<EditJobProps> = ({ data, setEditOpen }) => {
                     education: res?.education || '',
                     experience: res?.experience || '',
                     jobType: res?.jobType || '',
-                    experienceDate: res?.experienceDate || '',
+                    expiredAt: res?.expiredAt || '',
                     jobLevel: res?.jobLevel || '',
                     vacancies: res?.vacancies || '',
                     country: res?.country || '',
@@ -176,9 +176,9 @@ const EditJob: React.FC<EditJobProps> = ({ data, setEditOpen }) => {
                             </div>
                             <div className='w-full'>
                                 <label>Experience Date</label>
-                                <Field name="experienceDate" type="date"
+                                <Field name="expiredAt" type="date"
                                     className='input' />
-                                <ErrorMessage name="experienceDate" component="div" className="error" />
+                                <ErrorMessage name="expiredAt" component="div" className="error" />
                             </div>
                             <div className='w-full'>
                                 <label>Job Level</label>

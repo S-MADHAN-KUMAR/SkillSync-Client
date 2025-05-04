@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 export const EmployeeFromSchema = Yup.object({
     companyName: Yup.string().matches(/^[A-Za-z]+$/, 'Only letters are allowed').min(2, 'Min 2 characters').required('Company Name is required'),
     aboutCompany: Yup.string()
-        .matches(/^[A-Za-z\s]+$/, 'Only letters and spaces are allowed')
         .min(10, 'Min 10 characters')
         .required('About Company is required'),
 

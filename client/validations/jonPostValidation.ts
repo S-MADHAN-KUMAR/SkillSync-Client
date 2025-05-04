@@ -24,7 +24,8 @@ export const JobPostFormSchema = Yup.object({
     education: Yup.string().required('Education is required'),
     experience: Yup.string().required('Experience is required'),
     jobType: Yup.string().required('Job Type is required'),
-    experienceDate: Yup.string().required('Experience Date is required'),
+    expiredAt: Yup.date()
+        .min(new Date(), 'Expired Date cannot be in the past').required('Expired Date is required'),
     jobLevel: Yup.string().required('Job Level is required'),
     country: Yup.string().required('Country is required'),
     state: Yup.string().required('State is required'),

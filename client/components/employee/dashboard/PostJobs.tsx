@@ -17,7 +17,7 @@ const initialValues: JobPostFormValues = {
     education: '',
     experience: '',
     jobType: '',
-    experienceDate: '',
+    expiredAt: '',
     jobLevel: '',
     vacancies: '',
     country: '',
@@ -122,9 +122,9 @@ const PostJob = () => {
                             </div>
                             <div className='w-full'>
                                 <label>Experience Date</label>
-                                <Field name="experienceDate" type="date"
+                                <Field name="expiredAt" type="date"
                                     className='input' />
-                                <ErrorMessage name="experienceDate" component="div" className="error" />
+                                <ErrorMessage name="expiredAt" component="div" className="error" />
                             </div>
                             <div className='w-full'>
                                 <label>Job Level</label>

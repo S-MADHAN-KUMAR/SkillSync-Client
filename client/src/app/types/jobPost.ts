@@ -8,7 +8,7 @@ export interface JobPostFormValues {
     education: string;
     experience: string;
     jobType: string;
-    experienceDate: string;
+    expiredAt: string;
     jobLevel: string;
     vacancies: number | string;
     country: string;

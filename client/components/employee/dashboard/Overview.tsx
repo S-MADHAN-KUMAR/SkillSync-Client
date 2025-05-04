@@ -117,7 +117,7 @@ const Overview = () => {
                                                     </p>
                                                     <p className='text-xs text-[gray] flex items-center gap-1'>
                                                         <IoIosTimer />
-                                                        {Math.ceil((new Date(post?.experienceDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days remaining
+                                                        {Math.ceil((new Date(post?.expiredAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))} days remaining
                                                     </p>
                                                 </div>
                                             </div>
