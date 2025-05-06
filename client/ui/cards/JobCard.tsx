@@ -25,7 +25,7 @@ const JobCard = ({ data }: Props) => {
                     alt="Company Logo"
                     width={80}
                     height={80}
-                    className='rounded-lg border sm:w-26 h-auto object-contain'
+                    className='rounded-lg border w-full sm:w-26 h-auto object-contain'
                 />
                 <div className="flex flex-col justify-around gap-2 w-full">
                     <h1 className='sm:text-xl font-medium'>{data?.jobTitle}</h1>

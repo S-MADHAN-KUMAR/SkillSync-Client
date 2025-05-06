@@ -1,6 +1,8 @@
 export interface JobPostFormValues {
     _id?: string;
     jobTitle: string;
+    companyName?: string;
+    logo?: string;
     tags: string[];
     minSalary: number | string;
     maxSalary: number | string;

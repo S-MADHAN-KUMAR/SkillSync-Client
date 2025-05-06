@@ -42,10 +42,11 @@ export default function Page() {
     return (
         <div>
             <Navbar navLinks={employeeLinks} />
-            <div className="w-[100vw] flex justify-between gap-10 pt-10 px-10">
-                <div className="flex flex-col sticky top-26 justify-between h-[80vh]">
+            <div className="w-[100vw] flex md:flex-row flex-col justify-between gap-10 md:pt-10 md:px-10 p-5">
+
+                <div className="flex flex-col-reverse md:flex-col gap-5 md:gap-0 md:sticky md:top-26 justify-between md:h-[80vh]">
                     {/* Sidebar */}
-                    <div className="bg-[#d1dce8]  flex flex-col w-[250px] dark:bg-black p-6 rounded-lg h-fit text-black dark:text-white">
+                    <div className="bg-[#d1dce8]  flex flex-col md:w-[250px] dark:bg-black p-6 rounded-lg h-fit text-black dark:text-white">
                         <div className="flex flex-col gap-2">
                             <p
                                 onClick={() => setActiveTab("overview")}
@@ -84,12 +85,16 @@ export default function Page() {
                             </p>
                         </div>
                     </div>
-                    <div className="w-1/2" onClick={handleLogout}>
-                        <GlowingButton className='py-1 w-full'>
-                            logout
-                        </GlowingButton>
+                    <div className="flex justify-between items-center">
+                        <h1 className='text-3xl font-semibold md:hidden'>Menu</h1>
+                        <div className="w-1/2" onClick={handleLogout}>
+                            <GlowingButton className='py-1 w-full'>
+                                logout
+                            </GlowingButton>
+                        </div>
                     </div>
                 </div>
+
                 {/* Dynamic Content Area */}
                 <div className=" w-full mb-10">
                     {renderComponent()}
@@ -98,3 +103,5 @@ export default function Page() {
         </div>
     );
 }
+
+

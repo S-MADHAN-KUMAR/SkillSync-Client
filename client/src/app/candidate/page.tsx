@@ -7,9 +7,11 @@ import { candidateLinks } from '../types/ui'
 import Post from '../../../ui/cards/Post'
 import { GetCandidateProfile } from '../../../api/candidate/candidate'
 import { CandidateProfileFormValues } from '../types/candidate'
+import { useRouter } from 'next/navigation'
 
 const page = () => {
     const [data, setData] = React.useState<CandidateProfileFormValues>(null);
+    const router = useRouter()
     const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("candidate") || "null") : null;
     useEffect(() => {
         const fetchProfile = async () => {
@@ -30,38 +32,49 @@ const page = () => {
             <Navbar
                 navLinks={candidateLinks}
             />
-            <div className="w-[100vw] h-full flex justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
+            <div className="w-full min-h-screen flex flex-col lg:flex-row justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
 
                 {/* ---- 1 ----*/}
-                <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[55vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
+                <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[40vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
 
                     <div className=" w-full  h-[25vh]">
                         <div className="w-full h-24 relative ">
                             <img
                                 className="w-full h-full object-cover"
-                                src={data?.banner}
+                                src={data?.banner || 'https://help.icontact.com/customers/servlet/rtaImage?eid=ka8Hr000000bmcK&feoid=00N2H000005mBEj&refid=0EMHr000002vydy'}
                             />
                             <div className="w-30 h-30 overflow-hidden rounded-full border-white border-4 dark:border-[black] absolute -bottom-15 left-1/2 transform -translate-x-1/2">
                                 <img
                                     className="w-full h-full object-cover"
-                                    src={data?.logo}
+                                    src={data?.logo || 'https://www.shutterstock.com/image-vector/default-avatar-photo-placeholder-profile-600nw-772402006.jpg'}
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className=" h-fit flex flex-col gap-6 justify-around items-center text-center px-4">
-                        <h1 className="text-2xl font-medium">{data?.name}</h1>
+                    <div className="h-fit gap-10  flex flex-col  justify-around items-center text-center px-4">
+                        <h1 className="text-2xl font-medium">{user?.name}</h1>
                         <p className="text-sm text-[gray]">
-                            {data?.bio.length > 50 ? `${data?.bio.slice(0, 50)}...` : data?.bio}
+                            {data?.name
+                                ?
+                                `${data?.name}`
+                                :
+                                'Update yourname'
+                            }</p>
+                        <p className="text-xs text-[gray]">
+                            {data?.bio
+                                ? `${data.bio.slice(0, 80)}...`
+                                : 'Update your bio'}
                         </p>
 
-                        <p className="text-xs text-[gray]">{data?.state},{data?.country}</p>
+                        <p className="text-xs text-[gray]">{data?.state ? data?.state
+                            :
+                            'Update your  location'} , {data?.country
+                            }</p>
 
-                        <a href='/candidate/profile' className="bg-[#093b82] text-sm text-white cursor-pointer font-medium text-center w-2/3  rounded-full py-2 hover:scale-105 duration-150">
+                        <button onClick={() => router.push('/candidate/profile')} className="bg-[#093b82] text-sm text-white font-medium text-center h-8 rounded-full wordspace-nowrap inline-block px-6">
                             Update Profile
-                        </a>
-
+                        </button>
                     </div>
 
                 </div>
@@ -120,3 +133,5 @@ const page = () => {
 }
 
 export default page
+
+

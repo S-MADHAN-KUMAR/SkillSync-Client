@@ -51,7 +51,7 @@ const Page = () => {
     return (
         <div className='dark:bg-[rgb(8,8,8)]'>
             <Navbar navLinks={employeeLinks} />
-            <div className="w-[100vw] h-full flex justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
+            <div className="w-[100vw] h-full flex md:flex-row flex-col lg:justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
                 {/* ---- 1 ----*/}
                 <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-fit  rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden gap-5">
                     <div className=" w-full h-[25vh]">

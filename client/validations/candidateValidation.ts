@@ -20,7 +20,9 @@ export const CandidateFormSchema = Yup.object({
     country: Yup.string().required("Country is required"),
     state: Yup.string().required("State is required"),
     address: Yup.string().required("Address is required"),
-    gender: Yup.string().required("Gender is required"),
+    gender: Yup.string()
+        .oneOf(["male", "female", "others"], "Invalid gender")
+        .required("Gender is required"),
     website: Yup.string().url("Invalid URL").required("Website is required"),
     skills: Yup.array().of(Yup.string().required("Skill is required")).min(1, "At least one skill is required"),
     education: Yup.array().of(

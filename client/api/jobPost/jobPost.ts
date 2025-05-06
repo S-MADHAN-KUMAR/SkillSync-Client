@@ -30,7 +30,7 @@ export const CreateJobPost = async (data: JobPostFormValues) => {
 export const updateJobPost = async (data: JobPostFormValues, id: string) => {
     try {
         const response = await axios.put<jobPostResponse>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/${id}`,
+            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/update/${id}`,
             data,
             {
                 withCredentials: true,
@@ -87,11 +87,13 @@ export const GetAllJobs = async (
     }
 };
 
-export const GetRecentJobs = async (page: number, pageSize: number) => {
+export const GetRecentJobs = async (id: string) => {
     try {
+        console.log("Fetching recent jobs for ID:", id); // Debugging line
         const response = await axios.get<jobPostResponse>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/recent`
+            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/recent/${id}`
         )
+        console.log(response.data)
         if (response.data.success) {
             return response.data.jobs
         }
@@ -102,13 +104,41 @@ export const GetRecentJobs = async (page: number, pageSize: number) => {
     }
 };
 
-export const GetJob = async (id: string) => {
+export const GetJobs = async (id: string, page: number,
+    pageSize: number,
+    querys?: string,
+    location?: string,
+    jobType?: string,
+    skill?: string,) => {
     try {
+        const params = new URLSearchParams();
+        params.append('page', page.toString());
+        params.append('pageSize', pageSize.toString());
+        if (querys) params.append('querys', querys);
+        if (location && location !== 'All') params.append('location', location);
+        if (jobType && jobType !== 'All') params.append('jobType', jobType);
+        if (skill && skill !== 'All') params.append('skill', skill);
         const response = await axios.get<jobPostResponse>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/${id}`
+            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/${id}?${params.toString()}`
         )
         if (response.data.success) {
-            return response.data.jobs
+            return response.data
+        }
+    } catch (error) {
+        const err = error as AxiosError<{ message: string }>;
+        const message = err.response?.data?.message || err.message || 'Unknown error';
+        throw new Error('Error registering user: ' + message);
+    }
+};
+
+export const GetJob = async (id: string) => {
+    try {
+        console.log("Fetching job details for ID:", id);
+        const response = await axios.get<jobPostResponse>(
+            `${process.env.NEXT_PUBLIC_SERVER_URL}employee/jobs/details/${id}`
+        )
+        if (response.data.success) {
+            return response.data.job
         }
     } catch (error) {
         const err = error as AxiosError<{ message: string }>;

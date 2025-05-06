@@ -8,6 +8,7 @@ import Navbar from '../../../../ui/Navbar'
 import { candidateLinks } from '@/app/types/ui'
 import Pagination from '../../../../ui/paginations/Pagination'
 import JobCard from '../../../../ui/cards/JobCard'
+import Footer from '../../../../components/general/Footer'
 
 const Page = () => {
     const [jobPosts, setJobPosts] = useState<JobPostFormValues[]>([])
@@ -107,12 +108,12 @@ const Page = () => {
             </div>
 
             {/* Tag Buttons */}
-            <div className="flex flex-wrap gap-2 p-3 dark:bg-[#080808]">
+            <div className="flex gap-2 p-3 dark:bg-[#080808] overflow-x-auto whitespace-nowrap max-w-full scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
                 {allTags.map((tag, index) => (
                     <span
                         key={index}
                         onClick={() => setSelectedTag(tag)}
-                        className={`cursor-pointer px-5 py-2 border rounded text-xs md:text-sm hover:scale-110 transition ${selectedTag === tag
+                        className={`inline-block cursor-pointer px-5 py-2 border rounded text-xs md:text-sm hover:scale-110 transition ${selectedTag === tag
                             ? 'bg-blue-500 text-white border-none'
                             : 'bg-[#e9e9e9] dark:bg-[#1f1f1f] text-black dark:text-white border-none'
                             }`}
@@ -122,8 +123,9 @@ const Page = () => {
                 ))}
             </div>
 
+
             {/* Job Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 p-5 dark:bg-[#080808] bg-gray-100 min-h-[62vh] ">
+            <div className="grid grid-cols-2 lg:grid-cols-3 grid-rows-3  gap-5 py-15 px-5 dark:bg-[#080808] bg-gray-100 ">
                 {loading ? (
                     <p className="col-span-full text-center">Loading...</p>
                 ) : jobPosts.length > 0 ? (
@@ -141,7 +143,8 @@ const Page = () => {
                 currentPage={page}
                 onPageChange={handlePageChange}
             />
-        </div>
+            <Footer />
+        </div >
     )
 }
 

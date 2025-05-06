@@ -2,12 +2,12 @@ import { CandidateProfileFormValues } from "@/app/types/candidate";
 import axios, { AxiosError } from "axios";
 import { showToast } from "../../helpers/showToast";
 import { CandidateResponse } from "@/app/types/Api";
+import candidateAPI from "../axiosInterceptor/candidateAPI";
 
 export const UpdateCandidateProfile = async (data: CandidateProfileFormValues, id: string) => {
     try {
         const formData = new FormData();
 
-        // Append simple fields
         formData.append("name", data.name);
         formData.append("about", data.about);
         formData.append("bio", data.bio);
@@ -17,12 +17,10 @@ export const UpdateCandidateProfile = async (data: CandidateProfileFormValues, i
         formData.append("gender", data.gender);
         formData.append("website", data.website);
 
-        // Append files
         if (data.logo) formData.append("logo", data.logo);
         if (data.banner) formData.append("banner", data.banner);
         if (data.resume) formData.append("resume", data.resume);
 
-        // Append arrays (skills, education, experience)
         data.skills.forEach(skill => formData.append("skills[]", skill));
 
         data.education.forEach((edu, index) => {
@@ -37,8 +35,8 @@ export const UpdateCandidateProfile = async (data: CandidateProfileFormValues, i
             formData.append(`experience[${index}][duration]`, exp.duration);
         });
 
-        const response = await axios.put<CandidateResponse>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}candidate/${id}/profile`,
+        const response = await candidateAPI.put<CandidateResponse>(
+            `candidate/${id}/profile`,
             formData,
             {
                 withCredentials: true,
@@ -47,8 +45,6 @@ export const UpdateCandidateProfile = async (data: CandidateProfileFormValues, i
 
         if (response.data.success) {
             showToast(response.data.message, 'dark', 'success');
-            console.log(response.data);
-
             localStorage.setItem('candidate', JSON.stringify(response.data.user));
             return response;
         } else {
@@ -59,19 +55,16 @@ export const UpdateCandidateProfile = async (data: CandidateProfileFormValues, i
         const message = err.response?.data?.message || err.message || 'Unknown error';
         throw new Error('Error updating profile: ' + message);
     }
-};
-
+}
 
 export const GetCandidateProfile = async (id: string) => {
     try {
         console.log(id);
 
-        const response = await axios.get<CandidateResponse>(
-            `${process.env.NEXT_PUBLIC_SERVER_URL}candidate/get/${id}/profile`);
+        const response = await candidateAPI.get<CandidateResponse>(
+            `candidate/get/${id}/profile`);
 
         if (response.data.success) {
-            console.log(response.data.candidates);
-
             return response.data.candidates
         }
     } catch (error) {

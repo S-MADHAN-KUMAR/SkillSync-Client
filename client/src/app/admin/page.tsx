@@ -47,7 +47,7 @@ const page = () => {
         await adminLogout(router)
     }
     return (
-        <div className='w-full flex justify-between relative p-5 gap-5 h-[100vh]'>
+        <div className='w-full flex justify-between relative px-5 pt-15 pb-5 gap-5 h-[100vh]'>
 
             <div className="flex flex-col sticky top-26 justify-between h-full ">
                 {/* Sidebar */}
@@ -92,7 +92,7 @@ const page = () => {
             </div>
 
             {/* Dynamic Content Area */}
-            <div className="w-full bg-[#0b0b0b99] p-5">{renderComponent()}</div>
+            <div className="w-full bg-[#0b0b0b99] p-5 h-full">{renderComponent()}</div>
 
             <div className="cursor-pointer absolute top-4 right-4" onClick={toggleTheme}>
                 {mounted && (

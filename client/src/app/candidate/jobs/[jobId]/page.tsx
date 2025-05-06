@@ -7,6 +7,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import { GetJob } from '../../../../../api/jobPost/jobPost';
 import Navbar from '../../../../../ui/Navbar';
 import { candidateLinks } from '@/app/types/ui';
+import Footer from '../../../../../components/general/Footer';
 
 const Page = ({ params }: { params: Promise<{ jobId: string }> }) => {
     const [jobId, setJobId] = useState<string | null>(null);
@@ -30,9 +31,9 @@ const Page = ({ params }: { params: Promise<{ jobId: string }> }) => {
     return (
         <div>
             <Navbar navLinks={candidateLinks} />
-            <div className="flex justify-evenly w-full p-10 mb-20 dark:bg-[#0e0e0e] bg-[white]">
+            <div className="flex-col lg:flex-row  md:justify-evenly w-full h-full px-10 pt-10 dark:bg-[#0e0e0e] bg-[white] pb-30 flex ">
                 {/* 1 */}
-                <div className=" w-3/6 flex flex-col gap-10">
+                <div className=" md:w-3/6 flex flex-col gap-10 mb-15 md:mb-0">
                     {/* logo & title */}
                     <div className=" flex gap-5">
                         <div className="w-[160px]  rounded-lg overflow-hidden">
@@ -86,9 +87,9 @@ const Page = ({ params }: { params: Promise<{ jobId: string }> }) => {
 
                 </div>
                 {/* 2 */}
-                <div className=" flex flex-col w-3/7 gap-10">
+                <div className=" flex flex-col md:w-3/7 gap-10">
                     {/* apply-btn */}
-                    <div className=" flex items-center ms-auto gap-5">
+                    <div className=" flex items-center md:ms-auto gap-5">
                         <div className="dark:bg-[#000000] bg-blue-200 p-3 rounded">
                             <FaBookmark className='w-5 h-5 text-blue-800 dark:text-gray-200' />
                         </div>
@@ -137,6 +138,7 @@ const Page = ({ params }: { params: Promise<{ jobId: string }> }) => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div >
     );
 };

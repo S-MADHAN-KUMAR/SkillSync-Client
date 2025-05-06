@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const authPages = ['/login', '/register', '/forgotpassword']
+const authPages = ['/login', '/register']
 
 export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname
@@ -12,11 +12,11 @@ export function middleware(request: NextRequest) {
     const isAdminRoute = path.startsWith('/admin')
     const isAdminLoginRoute = path === '/admin/login'
 
-    let candidateToken = request.cookies.get('candidateToken')?.value
-    let employeeToken = request.cookies.get('employeeToken')?.value
-    let adminToken = request.cookies.get('adminToken')?.value
+    let candidateToken = request.cookies.get('candidateAccessToken')?.value
+    let employeeToken = request.cookies.get('employeeAccessToken')?.value
+    let adminToken = request.cookies.get('adminAccessToken')?.value
 
-    if (path.startsWith('/register/') || path.startsWith('/forgotpassword/')) {
+    if (path.startsWith('/register/')) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 

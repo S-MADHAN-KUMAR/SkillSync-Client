@@ -52,3 +52,9 @@ label {
 .error {
   @apply text-sm text-red-500
 }
+
+.syncAi {
+  background: linear-gradient(45deg, #1b0fc4 4%, #c90b0b, #29b8ff);
+  background-clip: text;
+  color: transparent;
+}

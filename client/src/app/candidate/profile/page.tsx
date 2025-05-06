@@ -2,17 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
-import * as Yup from "yup";
 import { CandidateProfileFormValues } from "@/app/types/candidate";
 import { GetCandidateProfile, UpdateCandidateProfile } from "../../../../api/candidate/candidate";
 import { CandidateFormSchema } from "../../../../validations/candidateValidation";
 import Navbar from "../../../../ui/Navbar";
 import { candidateLinks } from "@/app/types/ui";
 import GlowingButton from "../../../../ui/GlowingButton";
+import { CandidateLogout } from "../../../../api/auth/auth";
+import { useRouter } from "next/navigation";
 
 
-
-// Default empty values
 const defaultValues: CandidateProfileFormValues = {
     logo: null,
     banner: null,
@@ -37,26 +36,40 @@ const CandidateProfileForm = () => {
     const [resumeUrl, setResumeUrl] = useState<string | null>(null);
     const [isEdit, setIsEdit] = useState(false);
     const [readOnly, setReadOnly] = useState(false);
-
+    const router = useRouter()
     const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("candidate") || "null") : null;
 
     useEffect(() => {
         const fetchProfile = async () => {
+            const user = typeof window !== "undefined"
+                ? JSON.parse(localStorage.getItem("candidate") || "null")
+                : null;
+
             if (!user?.candidateProfileId) return;
+
             try {
                 const res = await GetCandidateProfile(user.candidateProfileId);
                 if (res) {
                     setInitialValues({
                         ...defaultValues,
                         ...res,
-                        skills: res.skills?.length ? res.skills : [""],
-                        education: res.education?.length ? res.education : [{ organization: "", course: "", duration: "" }],
-                        experience: res.experience?.length ? res.experience : [{ company: "", position: "", duration: "" }],
-                        resume: res.resume || ""
+                        logo: typeof res.logo === "string" ? res.logo : null, // assuming logo is a URL string from backend
+                        banner: typeof res.banner === "string" ? res.banner : null,
+                        skills: Array.isArray(res.skills) && res.skills.length ? res.skills : [""],
+                        education: Array.isArray(res.education) && res.education.length
+                            ? res.education
+                            : [{ organization: "", course: "", duration: "" }],
+                        experience: Array.isArray(res.experience) && res.experience.length
+                            ? res.experience
+                            : [{ company: "", position: "", duration: "" }],
+                        resume: res.resume || null, // always null in form, we only show preview using resumeUrl
+                        userId: user._id,
                     });
-                    setLogoPreview(res.logo || null);
-                    setBannerPreview(res.banner || null);
-                    setResumeUrl(res.resume || null);
+
+                    setLogoPreview(typeof res.logo === "string" ? res.logo : null);
+                    setBannerPreview(typeof res.banner === "string" ? res.banner : null);
+                    setResumeUrl(typeof res.resume === "string" ? res.resume : null);
+
                     setIsEdit(true);
                     setReadOnly(true); // lock on load
                 }
@@ -64,8 +77,10 @@ const CandidateProfileForm = () => {
                 console.error("Failed to fetch profile:", error);
             }
         };
+
         fetchProfile();
     }, []);
+
 
     const handleSubmit = async (values: CandidateProfileFormValues) => {
         if (!user?._id) {
@@ -80,16 +95,21 @@ const CandidateProfileForm = () => {
         }
     };
 
+    const handleLogout = async () => {
+        await CandidateLogout(router)
+    }
     return (
-        <div>
+        <div className="relative">
             <Navbar navLinks={candidateLinks} />
-            <div className={readOnly ? " w-full h-full flex flex-col p-6" : "hidden"}>
-                <div className="relative">
-                    <div className="w-full h-58 ">
-                        <img src={initialValues?.banner} className="w-full h-full object-cover" />
+
+            <div className={readOnly ? " w-full h-full flex flex-col overflow-hidden" : "hidden"}>
+
+                <div className="relative ">
+                    <div className=" w-full h-58 ">
+                        <img src={initialValues?.banner as string} className="w-full h-full object-cover" />
                     </div>
-                    <div className="w-56 absolute -bottom-26 left-30 border-4 rounded-full border-[#1e1e1e]">
-                        <img src={initialValues?.logo} className="w-full h-full object-cover" />
+                    <div className="w-56 h-56 overflow-hidden absolute -bottom-26 left-30 border-4 rounded-full border-[#1e1e1e]">
+                        <img src={initialValues?.logo as string} className="w-full h-full object-cover" />
                     </div>
                     {readOnly && (
                         <p className="w-40 absolute top-5 right-2">
@@ -103,9 +123,10 @@ const CandidateProfileForm = () => {
                         </p>
                     )}
                 </div>
-                <div className="bg-[#1e1e1e] w-full min-h-[90vh] p-30 flex flex-col gap-5">
-                    <div className="flex  gap-16 h-[442px]">
-                        <div className="flex flex-col gap-6">
+
+                <div className="bg-[#0f0f0f] w-full h-full md:min-h-[90vh] pt-30 px-5 md:p-30 flex flex-col gap-5 ">
+                    <div className="flex flex-col md:flex-row gap-16 h-full md:h-[442px] ">
+                        <div className="flex flex-col gap-6 md:max-w-2/3 ">
                             <div className="flex items-end gap-2">
                                 <h1 className="text-4xl font-medium">{initialValues?.name}</h1>
                                 <p className="text-blue-800">/ {initialValues?.gender}</p>
@@ -182,6 +203,7 @@ const CandidateProfileForm = () => {
                     </div>
                 </div>
             </div>
+
             < Formik
                 enableReinitialize
                 initialValues={initialValues}
@@ -190,6 +212,7 @@ const CandidateProfileForm = () => {
             >
                 {({ setFieldValue, values, isSubmitting }) => (
                     <Form className={readOnly ? "hidden" : "p-10 bg-gray-950 rounded-lg m-6"}>
+                        <h1 className="text-4xl font-semibold mb-15 ">Update Your Profile</h1>
                         <div className={readOnly ? "flex relative" : "flex  justify-between"}>
                             {/* Logo */}
                             <div>
@@ -239,7 +262,7 @@ const CandidateProfileForm = () => {
                         <div className={readOnly ? " bg-[#08080858] flex flex-col pl-20 pt-15" : " flex flex-col mt-15 gap-8"}>
 
                             <div className="flex flex-col gap-2 ">
-                                <label htmlFor="" className={readOnly && "hidden"}>Name</label>
+                                <label htmlFor="" className={readOnly ? "hidden" : ""}>Name</label>
                                 < Field name="name" className={readOnly ? "hidden" : "input max-w-1/3"} />
                                 <ErrorMessage name="name" component="div" className="error mt-1 text-sm" />
                             </div>
@@ -247,7 +270,7 @@ const CandidateProfileForm = () => {
                             <div className="flex justify-between  gap-10">
 
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>About</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>About</label>
                                     <Field
                                         as="textarea"
                                         name="about"
@@ -264,7 +287,7 @@ const CandidateProfileForm = () => {
                                 </div>
 
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>Bio</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>Bio</label>
                                     < Field name="bio" as="textarea"
                                         rows={10} className={readOnly ? "hidden" : "input  resize-none"} />
                                     <ErrorMessage name="bio" component="div" className="error mt-1 text-sm" />
@@ -275,30 +298,45 @@ const CandidateProfileForm = () => {
 
                             <div className="flex justify-between  gap-10">
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>Country</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>Country</label>
                                     < Field name="country" className={readOnly ? "hidden " : "input"} />
                                     <ErrorMessage name="country" component="div" className="error mt-1 text-sm" />
                                 </div>
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>State</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>State</label>
                                     < Field name="state" className={readOnly ? "hidden " : "input"} />
                                     <ErrorMessage name="state" component="div" className="error mt-1 text-sm" />
                                 </div>
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>Address</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>Address</label>
                                     < Field name="address" className={readOnly ? "hidden " : "input"} />
                                     <ErrorMessage name="address" component="div" className="error mt-1 text-sm" />
                                 </div>
                             </div>
 
                             <div className="flex justify-between  gap-10">
-                                <div className="flex flex-col gap-2 w-fit">
-                                    <label htmlFor="" className={readOnly && "hidden"}>Gender</label>
-                                    < Field name="gender" className={readOnly ? "hidden" : "input"} />
+                                <div className="flex flex-col gap-2 w-1/3">
+                                    <label htmlFor="gender" className={readOnly ? "hidden" : ""}>
+                                        Gender
+                                    </label>
+
+                                    {readOnly ? (
+                                        <span className="text-sm font-medium">{values.gender || "Not specified"}</span>
+                                    ) : (
+                                        <Field name="gender" as="select"
+                                            className='input '>
+                                            <option value="">Select</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                            <option value="others">Others</option>
+                                        </Field>
+                                    )}
+
                                     <ErrorMessage name="gender" component="div" className="error mt-1 text-sm" />
                                 </div>
+
                                 <div className="flex flex-col gap-2 w-full">
-                                    <label htmlFor="" className={readOnly && "hidden"}>Websit</label>
+                                    <label htmlFor="" className={readOnly ? "hidden" : ""}>Websit</label>
                                     < Field name="website" className={readOnly ? "hidden" : "input"} />
                                     <ErrorMessage name="website" component="div" className="error mt-1 text-sm" />
                                 </div>
@@ -486,6 +524,13 @@ const CandidateProfileForm = () => {
                     </Form>
                 )}
             </Formik >
+
+            <div className="absolute bottom-8 left-8 w-48" onClick={handleLogout}>
+                <GlowingButton className='py-1 w-full'>
+                    logout
+                </GlowingButton>
+            </div>
+
         </div >
     );
 };

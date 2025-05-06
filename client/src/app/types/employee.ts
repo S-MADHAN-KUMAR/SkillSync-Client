@@ -1,4 +1,5 @@
 export interface CompanyProfile {
+    _id?: string;
     logo: string | File;
     banner: string | File;
     companyName: string;

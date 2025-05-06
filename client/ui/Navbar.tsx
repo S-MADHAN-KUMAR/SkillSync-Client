@@ -30,8 +30,8 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultLinks }) => {
         const employee = localStorage.getItem('employee');
         const userData = candidate || employee;
 
-        const candidateToken = Cookies.get('candidateToken');
-        const employeeToken = Cookies.get('employeeToken');
+        const candidateToken = Cookies.get('candidateAccessToken');
+        const employeeToken = Cookies.get('employeeAccessToken');
         const userToken = candidateToken || employeeToken;
 
         if (userData && userToken) {

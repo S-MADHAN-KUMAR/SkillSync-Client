@@ -43,7 +43,6 @@ const EditJob: React.FC<EditJobProps> = ({ data, setEditOpen }) => {
         if (data) {
             try {
                 const res: JobPostFormValues | undefined = await GetJob(data);
-                console.log(res);
 
                 setInitialValues({
                     jobTitle: res?.jobTitle || '',

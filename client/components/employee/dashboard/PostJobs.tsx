@@ -41,7 +41,7 @@ const PostJob = () => {
             setLoading(true);
             console.log(values);
             await CreateJobPost(values);
-            // resetForm();
+            resetForm();
         } catch (error) {
             console.error('Job post creation failed:', error);
         } finally {
