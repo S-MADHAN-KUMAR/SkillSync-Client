@@ -8,8 +8,7 @@ import { IoMdSunny } from 'react-icons/io';
 import { IoIosMoon } from 'react-icons/io';
 import { NavbarProps, NavLink } from '@/app/types/ui';
 import Cookies from 'js-cookie';
-import { RegisterFormValues } from '@/app/types/auth';
-
+import { RegisterFormValues, User } from '@/app/types/auth';
 const defaultLinks: NavLink[] = [
     { label: 'Home', href: '/' },
     { label: 'Find Jobs', href: '/jobs' },
@@ -52,7 +51,8 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultLinks }) => {
     };
 
     return (
-        <header className="bg-[#d1dce8] dark:bg-black flex items-center justify-between px-6 py-3 sticky top-0 z-50 shadow-sm">
+        <header
+            className="bg-[#d1dce8] dark:bg-black flex items-center justify-between px-6 py-3 sticky top-0 z-50 shadow-sm">
             <div className="flex items-center gap-3">
                 <img src="/logo.png" alt="SkillSync Logo" className="w-10 h-10" />
                 <h1 className="font-bold text-2xl">SkillSync</h1>
@@ -65,6 +65,12 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultLinks }) => {
                     </Link>
                 ))}
             </nav>
+            {
+                user?.role === User.CANDIDATE &&
+                (
+                    <Link href="/candidate/syncAi" className='text-3xl font-extrabold syncAi cursor-pointer'>Sync AI</Link>
+                )
+            }
 
             <div className="flex items-center gap-4">
                 {!user && (
@@ -83,6 +89,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultLinks }) => {
                         </Link>
                     </>
                 )}
+
 
                 <img
                     className="w-10 h-10 object-cover rounded"
@@ -105,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({ navLinks = defaultLinks }) => {
                         ))}
                 </button>
             </div>
-        </header>
+        </header >
     );
 };
 

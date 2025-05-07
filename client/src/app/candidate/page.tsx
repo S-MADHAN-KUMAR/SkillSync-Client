@@ -4,13 +4,14 @@ import { MdAccountCircle } from 'react-icons/md'
 import { BiSolidImageAdd } from 'react-icons/bi'
 import Navbar from '../../../ui/Navbar'
 import { candidateLinks } from '../types/ui'
+import { motion } from 'framer-motion'
 import Post from '../../../ui/cards/Post'
 import { GetCandidateProfile } from '../../../api/candidate/candidate'
 import { CandidateProfileFormValues } from '../types/candidate'
 import { useRouter } from 'next/navigation'
 
 const page = () => {
-    const [data, setData] = React.useState<CandidateProfileFormValues>(null);
+    const [data, setData] = React.useState<CandidateProfileFormValues>();
     const router = useRouter()
     const user = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("candidate") || "null") : null;
     useEffect(() => {
@@ -35,7 +36,15 @@ const page = () => {
             <div className="w-full min-h-screen flex flex-col lg:flex-row justify-between gap-5 p-5 bg-[#f5f3f0] dark:bg-[#080808]">
 
                 {/* ---- 1 ----*/}
-                <div className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[40vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
+                <motion.div
+                    initial={{ opacity: 0, y: 100 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                        duration: 0.4,
+                        ease: 'easeOut'
+                    }}
+
+                    className="border border-[#b9b9b997] dark:border-0 bg-[#ffffff] dark:bg-[black] pb-4 min-h-[40vh] rounded-lg md:w-[300px] h-full flex justify-between items-center flex-col overflow-hidden">
 
                     <div className=" w-full  h-[25vh]">
                         <div className="w-full h-24 relative ">
@@ -77,7 +86,7 @@ const page = () => {
                         </button>
                     </div>
 
-                </div>
+                </motion.div>
 
 
 

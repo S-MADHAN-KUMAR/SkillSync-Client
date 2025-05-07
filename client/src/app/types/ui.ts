@@ -42,6 +42,7 @@ export const candidateLinks: NavLink[] = [
     { label: 'Find Jobs', href: '/candidate/jobs' },
     { label: 'Companies', href: '/candidate/companies' },
     { label: 'Profile', href: '/candidate/profile' },
+    { label: 'dashboard', href: '/candidate/dashboard' },
 ]
 export const employeeLinks: NavLink[] = [
     { label: 'Home', href: '/employee' },

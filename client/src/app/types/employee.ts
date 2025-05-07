@@ -4,6 +4,7 @@ export interface CompanyProfile {
     banner: string | File;
     companyName: string;
     aboutCompany: string;
+    jobPosts: string[]
 }
 
 export interface FoundingProfile {
@@ -22,6 +23,7 @@ export interface SocialLink {
 
 export interface SocialLinkFormValues {
     socialLinks: SocialLink[];
+
 }
 
 export interface AccountSettingForm {

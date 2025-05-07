@@ -93,7 +93,7 @@ const Page = () => {
                     <p className="col-span-full text-center">Loading...</p>
                 ) : employees.length > 0 ? (
                     employees.map((employee, index) => (
-                        <CompanyCard key={employee._id || index} data={employee} />
+                        <CompanyCard key={employee._id || index} data={employee} customIndex={index} />
                     ))
                 ) : (
                     <p className="col-span-full text-center">No Companies found.</p>

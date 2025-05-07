@@ -21,6 +21,7 @@
   ::-webkit-scrollbar {
     display: none;
   }
+
 }
 
 .input {
@@ -57,4 +58,34 @@ label {
   background: linear-gradient(45deg, #1b0fc4 4%, #c90b0b, #29b8ff);
   background-clip: text;
   color: transparent;
+}
+
+@keyframes fly {
+  0% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+
+  25% {
+    transform: translateY(-10px) translateX(5px) rotate(2deg);
+  }
+
+  50% {
+    transform: translateY(0px) translateX(0px) rotate(-2deg);
+  }
+
+  75% {
+    transform: translateY(5px) translateX(-5px) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px) rotate(0deg);
+  }
+}
+
+.animate-fly {
+  animation: fly 6s ease-in-out infinite;
+}
+
+.glow {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }

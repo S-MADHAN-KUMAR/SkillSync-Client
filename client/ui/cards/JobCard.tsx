@@ -4,16 +4,25 @@ import { FaRegBookmark } from "react-icons/fa";
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion'
 import { JobPostFormValues } from "@/app/types/jobPost";
 
 type Props = {
     data: JobPostFormValues | undefined;
+    customIndex?: number
 };
 
-const JobCard = ({ data }: Props) => {
+const JobCard = ({ data, customIndex }: Props) => {
     return (
         <Link href={`/candidate/jobs/${data?._id}`} prefetch>
-            <div
+            <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                    duration: 0.5,
+                    delay: customIndex as number * 0.1,
+                    ease: 'easeOut'
+                }}
                 className='p-3 hover:scale-105 duration-100 cursor-pointer
                 dark:bg-[#1f1f1f]
                 bg-[#ffffff]
@@ -45,7 +54,7 @@ const JobCard = ({ data }: Props) => {
                         <FaRegBookmark className='text-gray-400 cursor-pointer w-5 h-5' />
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </Link>
     );
 };

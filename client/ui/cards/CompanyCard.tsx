@@ -1,17 +1,27 @@
 import { EmployeeDataType } from '@/app/types/employee';
 import { GrLocationPin } from "react-icons/gr";
 import { FaLocationDot } from "react-icons/fa6";
+import { motion } from 'framer-motion';
 import React from 'react'
 import Link from 'next/link';
 
 type Props = {
     data: EmployeeDataType | undefined;
+    customIndex?: number
 };
 
-const CompanyCard = ({ data }: Props) => {
+const CompanyCard = ({ data, customIndex }: Props) => {
     return (
         <Link href={`/candidate/companies/${data?._id}`} prefetch>
-            <div className="flex justify-between max-w-[420px] h-[200px] bg-[#1f1f1f] rounded-xl shadow-md overflow-hidden p-3">
+            <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                    duration: 0.5,
+                    delay: customIndex as number * 0.1,
+                    ease: 'easeOut'
+                }}
+                className="flex justify-between max-w-[420px] h-[200px] bg-[#1f1f1f] rounded-xl shadow-md overflow-hidden p-3">
                 <div className="w-[200px] h-full rounded-lg overflow-hidden">
                     <img src={data?.logo} className="w-full h-full object-cover" />
                 </div>
@@ -43,7 +53,7 @@ const CompanyCard = ({ data }: Props) => {
                     </div>
 
                 </div>
-            </div >
+            </motion.div >
         </Link >
     )
 }

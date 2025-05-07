@@ -130,7 +130,7 @@ const Page = () => {
                     <p className="col-span-full text-center">Loading...</p>
                 ) : jobPosts.length > 0 ? (
                     jobPosts.map((post, index) => (
-                        <JobCard key={post._id || index} data={post} />
+                        <JobCard key={post._id || index} data={post} customIndex={index} />
                     ))
                 ) : (
                     <p className="col-span-full text-center">No jobs found.</p>

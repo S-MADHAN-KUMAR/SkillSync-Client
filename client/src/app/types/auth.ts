@@ -36,3 +36,9 @@ export interface ResetPasswordFormValues {
     password: string,
     confirmPassword: string
 }
+
+export enum User {
+    CANDIDATE = 'candidate',
+    EMPLOYEE = 'employee',
+    ADMIN = 'admin',
+}
