@@ -3,7 +3,6 @@ import { LoginFormValues, OtpVerifyFormValues, RegisterFormValues, ResetPassword
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { showToast } from '../../helpers/showToast';
 import { googleAuth, UserResponse } from '@/app/types/Api';
-import Cookies from 'js-cookie'
 
 export const Register = async (data: RegisterFormValues, router: AppRouterInstance) => {
     try {

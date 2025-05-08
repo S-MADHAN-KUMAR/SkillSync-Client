@@ -51,3 +51,9 @@ export type CandidateResponse = {
     token: string
     message: string;
 };
+
+export type MockInterviewResponse = {
+    success: boolean;
+    data: JSON
+    message: string;
+}
