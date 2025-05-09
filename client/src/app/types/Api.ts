@@ -56,4 +56,6 @@ export type MockInterviewResponse = {
     success: boolean;
     data: JSON
     message: string;
+    interviews: any
+    interview: any
 }
